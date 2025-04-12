@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:firebase_ml_text_recognition_app/services/capture_firestore_service.dart';
 import 'package:firebase_ml_text_recognition_app/widgets/image_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,7 +85,23 @@ class _TextCapturePageState extends State<TextCapturePage> {
           recognizedText += "${line.text} \n";
         }
       }
-      debugPrint(recognizedText);
+      //Store the Data
+      if (recognizedText.isNotEmpty) {
+        try {
+          await CaptureFirestoreService().storeCapturedData(
+            captureData: recognizedText,
+            capturedDate: DateTime.now(),
+            capturedImageFile: File(pickedImagePath!),
+          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Text Captured Successfully!")),
+            );
+          }
+        } catch (error) {
+          debugPrint("Error: $error");
+        }
+      }
     } catch (error) {
       if (!mounted) {
         return;
