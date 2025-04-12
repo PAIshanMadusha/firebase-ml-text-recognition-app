@@ -1,5 +1,6 @@
 import 'package:firebase_ml_text_recognition_app/widgets/image_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
@@ -57,11 +58,61 @@ class _TextCapturePageState extends State<TextCapturePage> {
     );
   }
 
+  //Text Recognizer
+  late TextRecognizer textRecognizer;
+  String recognizedText = "";
+  bool isRecognizing = false;
 
+  //Method to Process the Picked Image
+  void _processImage() async {
+    if (pickedImagePath == null) {
+      return;
+    }
+    setState(() {
+      isRecognizing = true;
+      recognizedText = "";
+    });
+    try {
+      final inputImage = InputImage.fromFilePath(pickedImagePath!);
+      final RecognizedText recognizedTextFromModel = await textRecognizer
+          .processImage(inputImage);
+
+      //Loop Through the Recognized Text
+      for (TextBlock block in recognizedTextFromModel.blocks) {
+        for (TextLine line in block.lines) {
+          recognizedText += "${line.text} \n";
+        }
+      }
+      debugPrint(recognizedText);
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      debugPrint("Error: $error");
+    } finally {
+      setState(() {
+        isRecognizing = false;
+      });
+    }
+  }
+
+  //Copy to Clipboard
+  void _copyToClipboard() async {
+    if (recognizedText.isNotEmpty) {
+      await Clipboard.setData(ClipboardData(text: recognizedText));
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Text Copied to Clipboard")));
+    }
+  }
 
   @override
   void initState() {
     imagePicker = ImagePicker();
+    textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     super.initState();
   }
 
@@ -69,20 +120,70 @@ class _TextCapturePageState extends State<TextCapturePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Text Capture")),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(15),
-          child: Column(
-            children: [
-              ImagePreview(imagePath: pickedImagePath),
-              SizedBox(height: 15),
-              if (!isImagePicked)
-                ElevatedButton(
-                  onPressed: _selectImageModel,
-                  child: Text("Pick an Image"),
+      body: Padding(
+        padding: EdgeInsets.all(15),
+        child: Column(
+          children: [
+            ImagePreview(imagePath: pickedImagePath),
+            SizedBox(height: 15),
+            if (!isImagePicked)
+              ElevatedButton(
+                onPressed: _selectImageModel,
+                child: Text("Pick an Image"),
+              ),
+            if (isImagePicked)
+              ElevatedButton(
+                onPressed: isRecognizing ? null : _processImage,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Capture Text"),
+                    if (isRecognizing) ...[
+                      SizedBox(width: 20),
+                      SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
+              ),
+            SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Recognized Text",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                IconButton(
+                  onPressed: _copyToClipboard,
+                  icon: Icon(Icons.copy, size: 35),
+                ),
+              ],
+            ),
+            if (!isRecognizing) ...[
+              Expanded(
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    child: SelectableText(
+                      recognizedText.isEmpty
+                          ? "Not Text Recognized"
+                          : recognizedText,
+                    ),
+                  ),
+                ),
+              ),
             ],
-          ),
+          ],
         ),
       ),
     );
