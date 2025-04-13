@@ -2,10 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ml_text_recognition_app/firebase_options.dart';
 import 'package:firebase_ml_text_recognition_app/pages/main_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Load the .env
+  await dotenv.load(fileName: ".env");
+  Stripe.publishableKey = dotenv.env["PUBLISHABLE_KEY"] ?? "";
+
   //Firebase Initialize
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
