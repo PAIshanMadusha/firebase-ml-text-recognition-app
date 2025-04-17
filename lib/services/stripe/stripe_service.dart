@@ -1,5 +1,6 @@
 //Initialization
 import 'package:firebase_ml_text_recognition_app/services/stripe/stripe_api_service.dart';
+import 'package:firebase_ml_text_recognition_app/services/stripe/stripe_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
@@ -44,6 +45,21 @@ Future<void> init({required String name, required String email}) async {
   if (subscription == null || subscription["id"] == null) {
     throw Exception("Faild to Create Subscription");
   }
+
+  //Store the Data in Firestore
+  StripeStorage().storeSubscriptionDetails(
+    customerId: customer["id"],
+    email: email,
+    userName: name,
+    subscriptionId: subscription["id"],
+    paymentStatus: "active",
+    startDate: DateTime.now(),
+    endDate: DateTime.now().add(Duration(days: 30)),
+    planId: "price_1REmVySHefmHhg9lhKnukC5O",
+    amountPaid: 2.85,
+    currency: "USD",
+    paymentMethod: "Credit Card",
+  );
 }
 
 //Create a New Customer
