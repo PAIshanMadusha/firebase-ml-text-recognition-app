@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ml_text_recognition_app/firebase_options.dart';
-import 'package:firebase_ml_text_recognition_app/pages/main_page.dart';
+import 'package:firebase_ml_text_recognition_app/pages/splash_page.dart';
 import 'package:firebase_ml_text_recognition_app/provider/premium_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: MainPage(),
+      home: SplashPage(),
     );
   }
 }

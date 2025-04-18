@@ -1,6 +1,7 @@
 import 'package:firebase_ml_text_recognition_app/pages/text_capture_history_page.dart';
 import 'package:firebase_ml_text_recognition_app/pages/text_capture_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -10,6 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  final double iconSize = 35;
   int _selectedIndex = 0;
 
   void _onTap(int index) {
@@ -24,9 +26,43 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onTap,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: "Text"),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.black,
+        selectedLabelStyle: TextStyle(
+          fontSize: 15,
+          color: Colors.green,
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontSize: 15,
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              "assets/lettertext.svg",
+              width: iconSize,
+              height: iconSize,
+              colorFilter: ColorFilter.mode(
+                _selectedIndex == 0 ? Colors.green : Colors.black,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: "Capture Text",
+          ),
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              "assets/history.svg",
+              width: iconSize,
+              height: iconSize,
+              colorFilter: ColorFilter.mode(
+                _selectedIndex != 0 ? Colors.green : Colors.black,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: "Captured History",
+          ),
         ],
       ),
       body: Center(
