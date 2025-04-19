@@ -17,12 +17,24 @@ class TextCaptureHistoryPage extends StatelessWidget {
     });
     return Scaffold(
       appBar: AppBar(
-        title: Text("Captured History"),
+        title: Text(
+          "Captured History",
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
         actions: [
           isPremiumProvider.isPremium
               ? Padding(
                 padding: const EdgeInsets.all(10),
-                child: Icon(Icons.workspace_premium, color: Colors.amber),
+                child: Icon(
+                  Icons.workspace_premium,
+                  size: 35,
+                  color: Colors.amber,
+                ),
               )
               : SizedBox(),
         ],

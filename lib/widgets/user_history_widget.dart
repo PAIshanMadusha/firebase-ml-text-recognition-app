@@ -8,14 +8,13 @@ class UserHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return Scaffold(
-      appBar: AppBar(title: Text("History")),
+    return Scaffold(
       body: StreamBuilder<List<CapturedModel>>(
         stream: CaptureFirestoreService().getUserCapturedData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(color: Colors.greenAccent),
+              child: CircularProgressIndicator(color: Colors.green),
             );
           }
           if (snapshot.hasError) {
@@ -33,7 +32,8 @@ class UserHistoryWidget extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.greenAccent[100],
+                  // ignore: deprecated_member_use
+                  color: Colors.grey.withOpacity(0.1),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(10),
@@ -68,7 +68,10 @@ class UserHistoryWidget extends StatelessWidget {
                               capturedone.captureData.length > 200
                                   ? "${capturedone.captureData.substring(0, 200)}..."
                                   : capturedone.captureData,
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                           IconButton(
@@ -82,14 +85,21 @@ class UserHistoryWidget extends StatelessWidget {
                                 ),
                               );
                             },
-                            icon: Icon(Icons.copy),
+                            icon: Icon(
+                              Icons.copy,
+                              size: 30,
+                              color: Colors.green,
+                            ),
                           ),
                         ],
                       ),
                       SizedBox(height: 15),
                       Text(
-                        "Converted on: ${capturedone.capturedDate.toLocal().toString().split(" ")[0]}",
-                        style: TextStyle(fontSize: 14),
+                        "Captured on: ${capturedone.capturedDate.toLocal().toString().split(" ")[0]}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),

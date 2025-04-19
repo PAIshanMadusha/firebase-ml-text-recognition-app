@@ -38,10 +38,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: GoogleFonts.poppins().fontFamily,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(color: Colors.greenAccent),
+        appBarTheme: AppBarTheme(color: Colors.green),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(Colors.greenAccent),
+            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 35, vertical: 15)),
+            backgroundColor: WidgetStatePropertyAll(Colors.green),
+            foregroundColor: WidgetStatePropertyAll(Colors.white),
           ),
         ),
       ),

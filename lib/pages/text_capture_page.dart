@@ -3,6 +3,7 @@ import 'package:firebase_ml_text_recognition_app/services/capture_firestore_serv
 import 'package:firebase_ml_text_recognition_app/widgets/image_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
@@ -33,6 +34,7 @@ class _TextCapturePageState extends State<TextCapturePage> {
   //Show Bottomsheet to Pick the Image
   void _selectImageModel() {
     showModalBottomSheet(
+      backgroundColor: Colors.green,
       context: context,
       builder: (context) {
         return Column(
@@ -43,16 +45,34 @@ class _TextCapturePageState extends State<TextCapturePage> {
                 Navigator.pop(context);
                 _pickImage(source: ImageSource.gallery);
               },
-              title: Text("Select from Gallery"),
-              leading: Icon(Icons.photo_library),
+              title: Text(
+                "Select from Gallery",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+              leading: Icon(Icons.photo_library, size: 30, color: Colors.white),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Divider(color: Colors.white),
             ),
             ListTile(
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(source: ImageSource.camera);
               },
-              title: Text("Select from Camera"),
-              leading: Icon(Icons.camera),
+              title: Text(
+                "Select from Camera",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 17,
+                ),
+              ),
+              leading: Icon(Icons.camera, size: 30, color: Colors.white),
             ),
           ],
         );
@@ -137,7 +157,17 @@ class _TextCapturePageState extends State<TextCapturePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Text Capture")),
+      appBar: AppBar(
+        title: Text(
+          "Image Text Capture",
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Column(
@@ -147,7 +177,10 @@ class _TextCapturePageState extends State<TextCapturePage> {
             if (!isImagePicked)
               ElevatedButton(
                 onPressed: _selectImageModel,
-                child: Text("Pick an Image"),
+                child: Text(
+                  "Pick an Image",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
               ),
             if (isImagePicked)
               ElevatedButton(
@@ -155,7 +188,13 @@ class _TextCapturePageState extends State<TextCapturePage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("Capture Text"),
+                    Text(
+                      "Capture Text",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                     if (isRecognizing) ...[
                       SizedBox(width: 20),
                       SizedBox(
@@ -163,28 +202,28 @@ class _TextCapturePageState extends State<TextCapturePage> {
                         width: 18,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Colors.green,
+                          color: Colors.white,
                         ),
                       ),
                     ],
                   ],
                 ),
               ),
-            SizedBox(height: 15),
+            SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Recognized Text",
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
                 IconButton(
                   onPressed: _copyToClipboard,
-                  icon: Icon(Icons.copy, size: 35),
+                  icon: Icon(Icons.copy, size: 30),
                 ),
               ],
             ),
@@ -192,11 +231,24 @@ class _TextCapturePageState extends State<TextCapturePage> {
               Expanded(
                 child: Scrollbar(
                   child: SingleChildScrollView(
-                    child: SelectableText(
-                      recognizedText.isEmpty
-                          ? "Not Text Recognized"
-                          : recognizedText,
-                    ),
+                    child:
+                        recognizedText.isEmpty
+                            ? Padding(
+                              padding: const EdgeInsets.only(top: 70),
+                              child: SvgPicture.asset(
+                                "assets/textfile.svg",
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                            : SelectableText(
+                              recognizedText,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
                   ),
                 ),
               ),

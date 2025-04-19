@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ImagePreview extends StatelessWidget {
   final String? imagePath;
@@ -10,15 +10,26 @@ class ImagePreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
-        color: Colors.green[100],
-        borderRadius: BorderRadius.circular(20),
+        // ignore: deprecated_member_use
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(25),
       ),
       child:
           imagePath == null
-              ? Icon(Icons.photo)
-              : Image.file(File(imagePath!), fit: BoxFit.cover),
+              ? Center(
+                child: SvgPicture.asset(
+                  "assets/undrawimages.svg",
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              )
+              : ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.file(File(imagePath!), fit: BoxFit.cover),
+              ),
     );
   }
 }
