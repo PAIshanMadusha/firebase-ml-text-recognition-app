@@ -47,13 +47,13 @@ The following [Stripe API](https://docs.stripe.com/api) endpoints were used to i
 ## 🛠️ Technologies Used:
 The following core technologies are used in this project:
 
-- **Flutter** – UI toolkit for building natively compiled applications for mobile.
-- **Dart** – Programming language used with Flutter.
-- **Firebase ML Kit** – For on-device text recognition (Optical Character Recognition (OCR)).
-- **Firebase Authentication** – Anonymous authentication to track user data securely.
-- **Cloud Firestore** – NoSQL cloud database to store captured text and metadata.
-- **Firebase Storage** – To store captured images securely.
-- **Stripe API** – Handles payment processing and subscriptions.
+- **Flutter** : UI toolkit for building natively compiled applications for mobile.
+- **Dart** : Programming language used with Flutter.
+- **Firebase ML Kit** : For on-device text recognition (Optical Character Recognition (OCR)).
+- **Firebase Authentication** : Anonymous authentication to track user data securely.
+- **Cloud Firestore** : NoSQL cloud database to store captured text and metadata.
+- **Firebase Storage** : To store captured images securely.
+- **Stripe API** : Handles payment processing and subscriptions.
 
 ---
 
