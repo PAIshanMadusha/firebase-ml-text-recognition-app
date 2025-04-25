@@ -187,5 +187,5 @@ Feel free to explore my work and get in touch if you'd like to collaborate! 🚀
 
 ---
 
-## 📝 License  
+## 📝 License:  
 This project is open-source and available under the MIT License.
